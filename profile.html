@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Data Profile</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <style>
+      body {
+        background-color: #0A0A0A;
+        color: white;
+        font-family: monospace;
+        padding: 40px;
+      }
+      a {
+        color: #EC940C;
+      }
+      .data-item {
+        margin-bottom: 8px;
+      }
+      /* PREMIUM RECTANGLE AD */
+.premium-offer {
+  position: fixed;
+  right: 200px;       /* moves it LEFT — adjust as needed */
+  top: 80px;
+
+  width: 320px;
+  background: #C4C600;   /* requested color */
+  color: black;
+
+  padding: 24px 20px;
+  border-radius: 12px;
+
+  font-family: Arial, sans-serif;
+  text-align: center;
+  cursor: pointer;
+
+  box-shadow: 0 0 20px #C4C600, 0 0 40px #C4C600;
+  user-select: none;
+
+  animation: blink 3.35s infinite linear;
+}
+
+/* blinking animation */
+@keyframes blink {
+  0%   { opacity: 1; transform: scale(1); }
+  50%  { opacity: 0.4; transform: scale(1.04); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.premium-title {
+  font-size: 24px;
+  font-weight: bold;
+  text-transform: uppercase;
+  line-height: 1.5;
+}
+
+.premium-subtitle {
+  margin-top: 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+.premium-list {
+  margin-top: 16px;
+  text-align: left;
+  font-size: 12px;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+
+    </style>
+  </head>
+  <body>
+    <h1 id="title"></h1>
+    <div id="content"></div>
+    <br>
+    <a href="index.html">← Back to Data Market</a>
+<!-- PREMIUM AD BOX -->
+<a href="dani.html" id="premium-offer" class="premium-offer">
+
+
+  <div class="premium-title">
+    FOR ONLY 10 EURO MORE<br>
+    YOU CAN BUY<br>
+    THIS ANONYMOUS USERS DIGITAL FOOTPRINT
+  </div>
+
+  <div class="premium-subtitle">
+    Limited-time deal — click to reveal
+  </div>
+
+  <div class="premium-list">
+    <strong>Includes:</strong><br>
+    Identity<br>
+    Education<br>
+    Work History<br>
+    Family History<br>
+    Awards<br>
+    Languages<br>
+    Education Courses Completed<br>
+    Major Life Events<br>
+    Origin & Relocation History<br>
+    Travel History<br>
+    Brand Affiliations<br>
+    Social Network<br>
+    Family<br>
+    Interests<br>
+    Favorite Films
+  </div>
+
+</a>
+
+<div id="dani-dossier"></div>
+
+</div>
+
+
+<!-- HIDDEN DOSSIER CONTENT -->
+<div id="dani-dossier"></div>
+    <script>
+      async function loadProfile() {
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get("id");
+        document.getElementById("title").innerText = `ANONYMOUS ${id}`;
+
+        const response = await fetch("fullData.json");
+        const fullData = await response.json();
+        const person = fullData[id];
+        const content = document.getElementById("content");
+
+        if (!person) {
+          content.innerHTML = "No data found.";
+          return;
+        }
+
+        for (const [key, value] of Object.entries(person)) {
+          const div = document.createElement("div");
+          div.className = "data-item";
+          div.innerHTML = `<strong>${key}:</strong> ${value}`;
+          content.appendChild(div);
+        }
+      }
+
+      loadProfile();
+    </script>
+
+    <script>
+  document.getElementById('premium-offer').addEventListener('click', function () {
+    document.getElementById('dani-dossier').style.display = 'block';
+    this.style.display = 'none';
+  });
+</script>
+
+  </body>
+</html>
+

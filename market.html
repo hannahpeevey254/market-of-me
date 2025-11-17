@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Data Market Board</title>
+  <script src="https://cdn.jsdelivr.net/npm/p5@1.9.0/lib/p5.min.js"></script>
+  <style>
+    body {
+      background-color: #0A0A0A;
+      color: white;
+      font-family: monospace;
+      margin: 0;
+      padding: 40px;
+    }
+    h1 {
+      color: #C4C600;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 16px;
+    }
+    th, td {
+      padding: 6px 12px;
+      text-align: left;
+    }
+    .up { color: #00FF66; }   /* green for gains */
+    .down { color: #FF4040; } /* red for losses */
+  </style>
+</head>
+<body>
+  <h1>DATA MARKET EXCHANGE</h1>
+  <table id="marketTable">
+    <thead>
+      <tr><th>Variable</th><th>Value (€)</th><th>Change</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    let sets = [
+      { "Heart rate":14, "Sleep stages":13, "Period cycles":12, "Anxiety":11, "Mood":10, "Screen time":9, "Movement":8, "Weight":7, "Step count":6, "Age":5, "Origin":4, "Body pain":3, "Creativity":2, "IQ":1 },
+      { "Sleep stages":14, "Mood":13, "Heart rate":12, "Anxiety":11, "Period cycles":10, "Step count":9, "Weight":8, "Screen time":7, "Movement":6, "Body pain":5, "Origin":4, "Creativity":3, "Age":2, "IQ":1 },
+      // ...add remaining sets
+    ];
+    let index = 0;
+    let lastSet = null;
+
+    function updateTable() {
+      let table = document.querySelector("#marketTable tbody");
+      table.innerHTML = "";
+      let current = sets[index];
+      for (let key in current) {
+        let val = current[key];
+        let change = 0;
+        let trend = "";
+        if (lastSet && lastSet[key] !== undefined) {
+          change = val - lastSet[key];
+          trend = change > 0 ? `<span class="up">▲ +${change}</span>` : 
+                   change < 0 ? `<span class="down">▼ ${change}</span>` : "—";
+        } else {
+          trend = "—";
+        }
+        let row = `<tr>
+          <td>${key}</td>
+          <td>${val}</td>
+          <td>${trend}</td>
+        </tr>`;
+        table.innerHTML += row;
+      }
+      lastSet = {...current};
+      index = (index + 1) % sets.length;
+    }
+
+    updateTable();
+    setInterval(updateTable, 2000); // update every 2 seconds
+  </script>
+</body>
+</html>
